@@ -13,8 +13,7 @@ class AuthController extends GetxController{
 
   @override
   void onInit() {
-    // TODO: implement onInit
-    preferenceHelper=SharedPreferenceHelper();
+   preferenceHelper=SharedPreferenceHelper();
     super.onInit();
   }
 
@@ -30,7 +29,6 @@ class AuthController extends GetxController{
       'password': password
     })
         .then((value) {
-      print("Student data Added");
       Get.offAllNamed(Routes.home);
       preferenceHelper.saveIsLoggedIn(true);
 
@@ -40,53 +38,19 @@ class AuthController extends GetxController{
   }
 
   Future<void> getStudent() {
-    // Calling the collection to add a new user
     return students.get().then((value) {
-
       final allData = value.docs.map((doc) => doc.data()).toList();
             List<dynamic> list = allData;
             usersList.clear();
             for (var element in list) {
               usersList.add(UserModel.fromJson(element as Map<String, dynamic>));
             }
-
-      // void getAllUsers() async {
-      //   if (await Utils.hasNetwork()) {
-      //     final first = databaseUserPath.orderBy('name').limit(5);
-      //     first.get().then((documentSnapshots) {
-      //       lastVisible = documentSnapshots.docs[documentSnapshots.size - 1];
-      //       final allData = documentSnapshots.docs.map((doc) => doc.data()).toList();
-      //       List<dynamic> list = allData;
-      //       usersList.clear();
-      //       for (var element in list) {
-      //         usersList.add(UserModel.fromJson(element as Map<String, dynamic>));
-      //       }
-      //       for (int i = 0; i < usersList.length; i++) {
-      //         if (usersList[i].uid == SharedPreferenceHelper().getUserId()) {
-      //           usersList.remove(usersList[i]);
-      //         }
-      //       }
-      //       for (int i = 0; i < usersList.length; i++) {
-      //         for (var element in blockUsersList) {
-      //           if (usersList[i].uid == element.uid ||
-      //               usersList[i].uid == element.blockedBy) {
-      //             usersList.remove(usersList[i]);
-      //             usersList.refresh();
-      //           }
-      //         }
-      //       }
-      //
-      //       usersList.refresh();
-      //     });
-      //   }
-      // }
     })
         .catchError((error) => print("Student couldn't be added."));
   }
 
   Future<void> login(String email,String password)async {
     Utils.showLoader();
-
     for(var item in usersList){
       if(email==item.email && password ==  item.password){
         preferenceHelper.saveIsLoggedIn(true);
@@ -97,8 +61,6 @@ class AuthController extends GetxController{
        Get.showSnackbar(GetSnackBar(message: "No User Found",));
       }
     }
-
-
   }
 
   Future<void> logout() async {
@@ -109,9 +71,4 @@ class AuthController extends GetxController{
       print(error);
     }
   }
-
-
-
-
-
 }
