@@ -27,13 +27,11 @@ void main() async{
 
 
 Future<String> findIntialRoute() async {
-  // String initialRoute = Routes.home;
-
-
   String initialRoute = Routes.login;
   SharedPreferenceHelper preferenceHelper=SharedPreferenceHelper();
   if(preferenceHelper.getIsLoggedIn()==true){
-    initialRoute=Routes.home;
+
+    initialRoute=Routes.bottomNavigationBar;
   }
   else{
     initialRoute=Routes.login;
@@ -63,7 +61,8 @@ class MyApp extends StatelessWidget {
             child: child!,
           );
         }),
-        initialRoute: Routes.home,
+
+        initialRoute: Routes.bottomNavigationBar,
         debugShowCheckedModeBanner: false,
         navigatorObservers: [ClearFocusOnPush()],
         onGenerateRoute: RoutesGenerator.generateRoute,

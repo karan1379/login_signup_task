@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:login_signup_task/authentication_module/login_screen.dart';
 import 'package:login_signup_task/authentication_module/signup_screen.dart';
+import 'package:login_signup_task/bottom_navigation_bar_module/bottom_navigation_bar_screen.dart';
 import 'package:login_signup_task/helper/routes/routes.dart';
 import 'package:login_signup_task/home_module/home_screen.dart';
 
@@ -21,6 +22,9 @@ class RoutesGenerator{
         break;
       case Routes.login:
         widgetScreen = LoginScreen();
+        break;
+      case Routes.bottomNavigationBar:
+        widgetScreen = BottomNavigationBarScreen();
         break;
       default:
         widgetScreen = _errorRoute();

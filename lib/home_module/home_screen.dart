@@ -9,6 +9,7 @@ import 'package:login_signup_task/model/image_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class HomeScreen extends StatelessWidget {
+
   HomeScreen({Key? key}) : super(key: key);
   final controller = Get.put(HomeScreenController());
   final RefreshController _refreshController = RefreshController(initialRefresh: false);
@@ -29,7 +30,6 @@ class HomeScreen extends StatelessWidget {
   }
   @override
   Widget build(BuildContext context) {
-    var size=MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
