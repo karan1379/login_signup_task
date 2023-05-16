@@ -1,23 +1,15 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:login_signup_task/home_module/home_screen_conroller.dart';
-import 'package:login_signup_task/home_module/list1_screen.dart';
-import 'package:login_signup_task/home_module/list2_screen.dart';
-import 'package:login_signup_task/home_module/list3_screen.dart';
 import 'package:login_signup_task/model/image_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class HomeScreen extends StatelessWidget {
-
-  HomeScreen({Key? key}) : super(key: key);
+class List3Screen extends StatelessWidget {
+  List3Screen({Key? key}) : super(key: key);
   final controller = Get.put(HomeScreenController());
-  var isShown=true.obs;
   final RefreshController _refreshController = RefreshController(initialRefresh: false);
-
   void _onRefresh() {
     Future.delayed(const Duration(milliseconds: 1000)).then((val) async {
       controller.salePageOffset.value = 0;
@@ -35,100 +27,53 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
-      key: controller.scaffoldKey,
-      appBar: AppBar(
-        actions:  [
-          Container(
-              alignment:Alignment.center ,
-              child: InkWell(
-                  onTap: (){
-                    controller.logout();
-                  },
-                  child: Text("Logout"))),
-        ],
-        title: const Text("Home"),
-        centerTitle: true,
-      ),
-      body: Column(
-        children: [
-          Container(
-            height: 45,
-            child: TabBar(
-              controller: controller.homeTabController,
-              isScrollable: true,
-              unselectedLabelColor: Colors.black,
-              physics: ClampingScrollPhysics(),
-              padding: EdgeInsets.symmetric(vertical: 8),
-              labelPadding: EdgeInsets.symmetric(horizontal: 30),
-              labelColor: Colors.white,
-              indicatorSize: TabBarIndicatorSize.tab,
-              indicator: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: const BorderRadius.all(Radius.circular(25))),
-              tabs:
-              [
-                Tab(child: Text(
-                  "List1",
-                  style: TextStyle(fontSize: 14),
-                ),),
-                Tab(
-                  child: Text(
-                    "List2",
-                    style: TextStyle(fontSize: 14),
-                  ),
-                ),
-                Tab(
-                  child: Text(
-                    "List3",
-                    style: TextStyle(fontSize: 14),
-                  ),
-                ),
-              ] ,
-              onTap: (index) {
-                if (index == 0) {
-                  isShown.value=true;
-                }
-                if (index == 1) {
-                  isShown.value=true;
-                }
-                if (index == 2) {
-                  isShown.value=true;
-                }
-                if (index == 3) {
-                  isShown.value=false;
-                }
-              },
+      body: Obx(()=>
+      controller.imageList.isEmpty
+          ? const Center(child: CircularProgressIndicator())
+          : SizedBox(
+        height: 200,
+            child: SmartRefresher(
+        enablePullDown: true,
+        scrollDirection: Axis.horizontal,
+        enablePullUp: true,
+            header: const MaterialClassicHeader(
+              color: Colors.black,
             ),
-          ),
-          Expanded(
-            child: TabBarView(
-              physics: NeverScrollableScrollPhysics(),
-                controller: controller.homeTabController,
-                children: [
-                  // HomeProductScreen(),
-                  // HomeServiceScreen(),
-                  // HomeEventScreen(),
-                  List1Screen(),
-                  List2Screen(),
-                  List3Screen()
-                ]),
+            footer:const ClassicFooter(
+              loadingIcon: CupertinoActivityIndicator(
+                color: Colors.black,
+              ),
+            ),
+        controller: _refreshController,
+        onLoading: _onLoading,
+        onRefresh: _onRefresh,
+              child: ListView.separated(
+                physics: BouncingScrollPhysics(),
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (ctx, position) {
+                  final bodyData = controller.imageList[position];
+                  return createCard(bodyData);
+                },
+                itemCount: controller.imageList.length, separatorBuilder: (BuildContext context, int index) {
+                return const  SizedBox(
+
+                  width: 0,
+                );
+              },
+
+              ),
+            ),
           )
-        ],
       ),
-
-
-
-
-
     );
   }
   Widget createCard(ImageModel bodyData) {
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: SizedBox(
-        height: 80,
+        height: 200,
+        width: 200,
         child: Card(
           clipBehavior: Clip.hardEdge,
           elevation: 5,
@@ -176,6 +121,4 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
-
-
 }

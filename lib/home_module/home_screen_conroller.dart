@@ -8,7 +8,7 @@ import 'package:login_signup_task/helper/shared_prefrence_helper.dart';
 import 'package:login_signup_task/model/image_model.dart';
 import 'package:login_signup_task/utils/api_constants.dart';
 
-class HomeScreenController extends GetxController {
+class HomeScreenController extends GetxController with GetSingleTickerProviderStateMixin{
 
   Dio dio = Dio();
   var salePageOffset = 0.obs;
@@ -16,10 +16,12 @@ class HomeScreenController extends GetxController {
   var scaffoldKey = GlobalKey<ScaffoldState>();
   RxList<ImageModel> imageList = RxList();
   late SharedPreferenceHelper preferenceHelper;
+  late TabController homeTabController;
   @override
   void onInit() {
     super.onInit();
     preferenceHelper=SharedPreferenceHelper();
+    homeTabController = TabController(length: 3, vsync: this);
     getList();
   }
 
